@@ -7,5 +7,5 @@ if [ "${NO_CHANGELOG_LABEL}" = "true" ]; then
 else
     # a changelog check is required
     # fail if the diff is empty
-    ! git diff --exit-code "origin/${BASE_REF}" -- CHANGES.md
+    ! git diff --exit-code "${BASE_REF}" -- CHANGES.md
 fi
