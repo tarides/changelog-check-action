@@ -1,7 +1,7 @@
 #!/bin/bash
 set -uo pipefail
 
-if [ "${NO_CHANGELOG_LABEL}" ]; then
+if [ "${NO_CHANGELOG_LABEL}" = "true" ]; then
     # 'no changelog' set, so finish successfully
     exit 0
 else
