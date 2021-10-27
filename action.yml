@@ -8,6 +8,8 @@ runs:
   steps:
   - name: Check out repository code
     uses: actions/checkout@v2
+    with:
+      fetch-depth: 0
   - name: Check for changes in changelog
     env:
       BASE_REF: ${{ github.event.pull_request.base.ref }}
