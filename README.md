@@ -1,8 +1,12 @@
 # changelog-check-action
 
-This GitHub Action will check whether your PR also modifies the changelog. This
-is useful to ensure that each change committed comes with an user-readable
-explanation.
+This GitHub Action will check whether a PR also modifies the projects
+changelog. This is useful to ensure that each change committed comes with an
+user-readable explanation.
+
+It doesn't check the format of the changelog but is still meant as a reminder
+to add a change so the contents of the change itself can be discussed in the
+review.
 
 ## How it works
 
@@ -11,10 +15,16 @@ explanation.
 3. Add an entry in `CHANGES.md` and push
 4. See the action succeed.
 
+### Opting out
+
 Not all changes need a changelog entry, some are not user-visible, like
 changing CI or some internal refactoring. For those it is possible to disable
-the check. Just create a new label, `no changelog` and apply it to the PR, then
-the changelog check will be disabled for this PR.
+the check.
+
+To do so, create a new label called `no changelog` and apply it to the PR. Then
+the changelog check will re-run and succeed automatically. This label can also
+be applied directly when opening the PR so the check will be automatically
+omitted.
 
 ## Set up
 
@@ -26,7 +36,7 @@ Add this to your GitHub workflow:
 
 ```yaml
 - name: Check changelog
-  uses: tarides/changelog-check-action@v1
+  uses: tarides/changelog-check-action@v2
 ```
 
 ### Full example
@@ -45,5 +55,5 @@ jobs:
     name: Check Changelog Action
     runs-on: ubuntu-20.04
     steps:
-      - uses: tarides/changelog-check-action@v1
+      - uses: tarides/changelog-check-action@v2
 ```
