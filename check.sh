@@ -7,10 +7,10 @@ if [ "${NO_CHANGELOG_LABEL}" = "true" ]; then
 else
     # a changelog check is required
     # fail if the diff is empty
-
-    >&2 echo "User-visible changes should come with an entry in the changelog. This behavior
+    if git diff --exit-code "origin/main" -- CHANGES.md; then
+        >&2 echo "User-visible changes should come with an entry in the changelog. This behavior
 can be overridden by using the \"no changelog\" label, which is used for changes
 that are not user-visible."
-
-    ! git diff --exit-code "origin/${BASE_REF}" -- CHANGES.md
+        exit 1
+    fi
 fi
