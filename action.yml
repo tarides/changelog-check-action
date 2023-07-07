@@ -3,6 +3,11 @@ description: 'Make sure that a PR also reflects in a change in the changelog'
 branding:
   icon: 'hash'
   color: 'blue'
+inputs:
+  changelog:
+    description: "Which file to use for checking that the changelog was modified"
+    required: false
+    default: 'CHANGES.md'
 runs:
   using: "composite"
   steps:
@@ -14,5 +19,5 @@ runs:
     env:
       BASE_REF: ${{ github.event.pull_request.base.ref }}
       NO_CHANGELOG_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'no changelog') }}
-    run: ${{ github.action_path }}/check.sh
+    run: ${{ github.action_path }}/check.sh "${{ env.INPUT_CHANGELOG }}"
     shell: bash

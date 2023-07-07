@@ -11,8 +11,8 @@ review.
 ## How it works
 
 1. Create a PR with some changes
-2. See the action fail your build because the `CHANGES.md` wasn't modified
-3. Add an entry in `CHANGES.md` and push
+2. See the action fail your build because the changelog wasn't modified
+3. Add an entry in changelog and push
 4. See the action succeed.
 
 ### Opting out
@@ -25,6 +25,11 @@ To do so, create a new label called `no changelog` and apply it to the PR. Then
 the changelog check will re-run and succeed automatically. This label can also
 be applied directly when opening the PR so the check will be automatically
 omitted.
+
+## Options
+
+The file that is being checked by default is called `CHANGES.md` but you can
+use the `changelog` argument to specify any other file as well.
 
 ## Set up
 
@@ -56,4 +61,6 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: tarides/changelog-check-action@v2
+        with:
+          changelog: CHANGES.md
 ```
