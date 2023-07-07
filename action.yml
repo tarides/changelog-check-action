@@ -19,5 +19,5 @@ runs:
     env:
       BASE_REF: ${{ github.event.pull_request.base.ref }}
       NO_CHANGELOG_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'no changelog') }}
-    run: ${{ github.action_path }}/check.sh "${{ env.INPUT_CHANGELOG }}"
+    run: ${{ github.action_path }}/check.sh "${{ inputs.changelog }}"
     shell: bash
