@@ -41,7 +41,7 @@ Add this to your GitHub workflow:
 
 ```yaml
 - name: Check changelog
-  uses: tarides/changelog-check-action@v2
+  uses: tarides/changelog-check-action@v3
 ```
 
 ### Full example
@@ -52,15 +52,14 @@ A complete `.github/workflows/changelog.yml` might look like this:
 name: Check Changelog
 on:
   pull_request:
-    types: [assigned, opened, synchronize, reopened, labeled, unlabeled]
-    branches:
-      - main
+    types: [assigned, labeled, opened, reopened, synchronize, unlabeled]
+    branches: [main]
 jobs:
   Check-Changelog:
     name: Check Changelog Action
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: tarides/changelog-check-action@v2
+      - uses: tarides/changelog-check-action@v3
         with:
           changelog: CHANGES.md
 ```
