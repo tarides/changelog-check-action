@@ -1,23 +1,23 @@
-name: 'Check Changelog for changes'
-description: 'Make sure that a PR also reflects in a change in the changelog'
+name: Check Changelog for changes
+description: Make sure that a PR also reflects in a change in the changelog
 branding:
-  icon: 'hash'
-  color: 'blue'
+  icon: hash
+  color: blue
 inputs:
   changelog:
-    description: "Which file to use for checking that the changelog was modified"
+    description: Which file to use for checking that the changelog was modified
     required: false
-    default: 'CHANGES.md'
+    default: CHANGES.md
 runs:
-  using: "composite"
+  using: composite
   steps:
-  - name: Check out repository code
-    uses: actions/checkout@v4
-    with:
-      fetch-depth: 0
-  - name: Check for changes in changelog
-    env:
-      BASE_REF: ${{ github.event.pull_request.base.ref }}
-      NO_CHANGELOG_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'no changelog') }}
-    run: ${{ github.action_path }}/check.sh "${{ inputs.changelog }}"
-    shell: bash
+    - name: Check out repository code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Check for changes in changelog
+      env:
+        BASE_REF: ${{ github.event.pull_request.base.ref }}
+        NO_CHANGELOG_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'no changelog') }}
+      run: ${{ github.action_path }}/check.sh "${{ inputs.changelog }}"
+      shell: bash
