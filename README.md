@@ -26,6 +26,9 @@ the changelog check will re-run and succeed automatically. This label can also
 be applied directly when opening the PR so the check will be automatically
 omitted.
 
+You can also set a custom set of labels using the `labels` inputs (separated by
+commas). If ANY of the labels matches, the check is skipped.
+
 ## Options
 
 The file that is being checked by default is called `CHANGES.md` but you can
@@ -63,4 +66,5 @@ jobs:
       - uses: tarides/changelog-check-action@v2
         with:
           changelog: CHANGES.md
+          labels: "no changelog,dependencies"
 ```
