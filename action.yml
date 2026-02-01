@@ -8,6 +8,10 @@ inputs:
     description: Which file to use for checking that the changelog was modified
     required: false
     default: CHANGES.md
+  labels:
+    description: The labels (semicolon separated) that allow a PR to pass without modifying the changelog
+    required: false
+    default: "no changelog"
 runs:
   using: composite
   steps:
@@ -15,9 +19,22 @@ runs:
       uses: actions/checkout@v5
       with:
         fetch-depth: 0
-    - name: Check for changes in changelog
+    - name: Check PR labels
+      shell: bash
+      id: skip-check
+      run: |
+        IFS=',' read -ra WANT <<< "${{ inputs.labels }}"
+        PR_LABELS="${{ join(github.event.pull_request.labels.*.name, ' ') }}"
+        for w in "${WANT[@]}"; do
+          if [[ " $PR_LABELS " == *" $w "* ]]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+        done
+        echo "skip=false" >> "$GITHUB_OUTPUT"
+    - name: Alert for missing changes in changelog
+      if: steps.skip-check.outputs.skip == 'true'
       env:
         BASE_REF: ${{ github.event.pull_request.base.ref }}
-        NO_CHANGELOG_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'no changelog') }}
-      run: ${{ github.action_path }}/check.sh "${{ inputs.changelog }}"
+      run: ${{ github.action_path }}/fail.sh "${{ inputs.changelog }}"
       shell: bash
