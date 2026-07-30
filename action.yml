@@ -8,16 +8,21 @@ inputs:
     description: Which file to use for checking that the changelog was modified
     required: false
     default: CHANGES.md
+  labels:
+    description: The labels (semicolon separated) that allow a PR to pass without modifying the changelog
+    required: false
+    default: "no changelog"
 runs:
   using: composite
   steps:
     - name: Checkout tree
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
     - name: Check for changes in changelog
-      env:
-        BASE_REF: ${{ github.event.pull_request.base.ref }}
-        NO_CHANGELOG_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'no changelog') }}
       run: |
         git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin "+${{ github.event.pull_request.base.ref }}:refs/remotes/origin/${{ github.event.pull_request.base.ref }}" --quiet
-        ${{ github.action_path }}/check.sh "${{ inputs.changelog }}"
+        ${{ github.action_path }}/check.sh \
+        --base-ref "${{ github.event.pull_request.base.ref }}" \
+        --changelog-file "${{ inputs.changelog}}" \
+        --labels-to-skip "${{ inputs.labels }}" \
+        --labels-set "${{ join(github.even.pull_request.labels.*.name, ';') }}"
       shell: bash
