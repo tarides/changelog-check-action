@@ -13,11 +13,11 @@ runs:
   steps:
     - name: Checkout tree
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      with:
-        fetch-depth: 0
     - name: Check for changes in changelog
       env:
         BASE_REF: ${{ github.event.pull_request.base.ref }}
         NO_CHANGELOG_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'no changelog') }}
-      run: ${{ github.action_path }}/check.sh "${{ inputs.changelog }}"
+      run: |
+        git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin "+${{ github.event.pull_request.base.ref }}:refs/remotes/origin/${{ github.event.pull_request.base.ref }}" --quiet
+        ${{ github.action_path }}/check.sh "${{ inputs.changelog }}"
       shell: bash
