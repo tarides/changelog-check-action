@@ -65,7 +65,7 @@ on:
 jobs:
   Check-Changelog:
     name: Check Changelog Action
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-slim
     steps:
       - uses: tarides/changelog-check-action@v4
         with:
