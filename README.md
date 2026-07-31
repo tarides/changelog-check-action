@@ -21,15 +21,22 @@ Not all changes need a changelog entry, some are not user-visible, like
 changing CI or some internal refactoring. For those it is possible to disable
 the check.
 
-To do so, create a new label called `no changelog` and apply it to the PR. Then
-the changelog check will re-run and succeed automatically. This label can also
-be applied directly when opening the PR so the check will be automatically
-omitted.
+To do so, decide on a label to apply to these PRs. By default the action uses
+`no changelog`, but it can be any label, or even multiple ones. Then apply the
+label to the PR in question which will re-run the check and pass successfully
+this time. This label can also be applied directly when opening the PR so the
+check will be automatically omitted.
 
-## Options
+## Inputs
 
 The file that is being checked by default is called `CHANGES.md` but you can
 use the `changelog` argument to specify any other file as well.
+
+| Key           | Meaning                                                             | Default value       |
+| ------------- | ------------------------------------------------------------------- | ------------------- |
+| `changelog`   | file that is checked for changes                                    | `CHANGES.md`        |
+| `labels`      | semicolon separated list of labels which trigger skipping the check | `no changelog`      |
+
 
 ## Set up
 
@@ -41,7 +48,7 @@ Add this to your GitHub workflow:
 
 ```yaml
 - name: Check changelog
-  uses: tarides/changelog-check-action@v2
+  uses: tarides/changelog-check-action@v4
 ```
 
 ### Full example
@@ -58,9 +65,10 @@ on:
 jobs:
   Check-Changelog:
     name: Check Changelog Action
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
-      - uses: tarides/changelog-check-action@v2
+      - uses: tarides/changelog-check-action@v4
         with:
           changelog: CHANGES.md
+          labels: "no changelog"
 ```
